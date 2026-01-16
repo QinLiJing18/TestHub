@@ -1,7 +1,9 @@
+version: '3.8'
+
 # ========================================
 # TestHub IoT测试管理平台 - Docker编排配置
 # 一键启动所有基础设施：MySQL、Redis、Nacos、EMQX(MQTT)
-# 使用方法：docker compose up -d
+# 使用方法：docker-compose up -d
 # ========================================
 
 services:
