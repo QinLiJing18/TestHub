@@ -1,24 +1,58 @@
 # Maven / Java
 /target/
+*/target/
+*.class
+*.jar
+*.war
+*.ear
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 dependency-reduced-pom.xml
 release.properties
+.flattened-pom.xml
+
+# Maven build artifacts
+maven-archiver/
+maven-status/
+*.jars
 
 # IDEs
 .idea/
 .vscode/
 *.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+*~
+
+# Build output
+*/target/
+**/target/
 
 # Logs
 *.log
+logs/
 
 # OS files
 .DS_Store
 Thumbs.db
 
+# Node modules (if frontend builds)
+node_modules/
+dist/
+
+# Spring Boot
+.env
+.env.local
+
 # Others
-/.classpath
-/.project
-/.settings/
+.classpath
+.project
+.settings/
+.springBeans
+*.sublime-workspace
