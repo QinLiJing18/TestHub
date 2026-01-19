@@ -2,6 +2,7 @@ package com.testhub.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
@@ -17,7 +18,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  *
  * @author TestHub Team
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableDiscoveryClient  // 启用Nacos服务发现
 public class GatewayApplication {
 
