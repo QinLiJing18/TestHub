@@ -1,3 +1,120 @@
+# TestHub — 快速启动（修正版，含 Windows 与 Linux 指令）
+
+说明：此文档按优先级给出在 Windows (PowerShell / Git Bash) 与 Linux/macOS 上把项目从仓库拉最新、启动基础镜像（Docker Compose），并启动网关与认证服务的完整命令序列。
+
+前提条件
+- JDK 17+
+- Maven 3.8+
+- Docker Desktop (确保 `docker` 可用；Windows 推荐启用 Docker Compose plugin)
+- Git
+
+注意：如果你的 `git push` 之前遇到 SSH 22 端口超时，建议把 `origin` remote 切为 HTTPS：
+```powershell
+git remote set-url origin https://github.com/QinLiJing18/TestHub.git
+```
+
+一、在 PowerShell (Windows) 上：
+
+1) 进入项目目录：
+```powershell
+Set-Location 'D:\aproject\TestHub'
+# 或
+cd 'D:\aproject\TestHub'
+```
+
+2) 确认 Docker Desktop 在运行（若未启动，请先启动 Docker Desktop）。
+
+3) 将本地改动安全保存、同步远端并更新本地分支：
+```powershell
+# 保存未提交改动（可选）
+git stash push -m "WIP before pull"
+
+# 获取远端并变基（将本地提交放在远端之上）
+git fetch origin
+git rebase origin/master
+
+# 恢复工作区改动（如使用 stash）
+git stash pop || true
+```
+
+4) 启动基础设施与服务（使用我们仓库内的自动化脚本）：
+```powershell
+# 使用仓库内的 PowerShell 启动脚本，会：启动 Docker Compose、等待健康、构建并打开两个服务终端
+Set-Location 'D:\aproject\TestHub\scripts'
+.\start-all.ps1
+
+# 若你想让脚本输出到文件，可用：
+.\start-all.ps1 2>&1 | Tee-Object ..\start-all.log
+```
+
+5) 手动替代（若脚本不可用）：
+```powershell
+# 在项目根目录运行
+docker compose up -d --build
+docker compose ps
+
+# 构建项目（跳过测试以加快）
+mvn -T 1C clean install -DskipTests
+
+# 在两个新终端分别启动服务
+Start-Process powershell -ArgumentList "-NoExit -Command cd testhub-gateway; mvn spring-boot:run"
+Start-Process powershell -ArgumentList "-NoExit -Command cd testhub-auth; mvn spring-boot:run"
+```
+
+二、在 Git Bash / Linux / macOS：
+
+1) 进入项目目录并同步远端：
+```bash
+cd /d/aproject/TestHub    # Git Bash on Windows (或 /path/to/TestHub on Linux)
+git stash push -m "WIP before pull"
+git fetch origin
+git rebase origin/master
+git stash pop || true
+```
+
+2) 启动基础设施与服务：
+```bash
+chmod +x scripts/start-all.sh
+./scripts/start-all.sh 2>&1 | tee start-all.log
+```
+
+或手动：
+```bash
+docker compose up -d --build
+docker compose ps
+mvn -T 1C clean install -DskipTests
+(cd testhub-gateway && mvn spring-boot:run &)
+(cd testhub-auth && mvn spring-boot:run &)
+```
+
+三、验证与排错（常用命令）
+- 查看容器健康与状态：
+```bash
+docker ps --filter "name=testhub-" --format "{{.Names}}\t{{.Status}}"
+docker compose logs --no-log-prefix --tail=200
+docker compose logs mysql --no-log-prefix --tail=200
+```
+- 查看 Maven 构建日志（若构建失败）：
+```bash
+mvn -B -T 1C clean install -DskipTests 2>&1 | tee maven-build.log
+```
+- 若 Git push 被拒（远端有更新），请执行：
+```bash
+git fetch origin
+git rebase origin/master
+# 解决冲突后 git add <file> && git rebase --continue
+git push origin master
+```
+
+四、常见问题快速修复
+- Nacos 无法连接到 MySQL：我们已在 `docker-compose.yml` 中切回 embedded 存储以利本地开发；若需使用 MySQL，请在 `docker-compose.yml` 中打开 `MYSQL_SERVICE_*` 环境变量并确保 `nacos_config` 数据库存在。
+- Docker 命令不可用：在 Windows 上安装并启动 Docker Desktop；在 Linux 上安装 docker + docker-compose 插件。
+- 端口冲突：使用 `netstat -ano | findstr 3306`（Windows）或 `lsof -i :3306`（Linux）检查并释放端口，或修改 `docker-compose.yml` 端口映射。
+
+五、如果需要我继续远程分析（我将自动在 CI 上运行并修复）
+- 请 push 你的分支到 GitHub（HTTPS remote），CI 会运行并上传 `infra-and-build-logs` artifact；把 artifact 下载后贴给我，我会分析并提交修复。
+
+—— 结束 ——
 # 🚀 TestHub IoT - 修复后的快速启动指南
 
 > **重要提示**: 原QUICK_START.md中的docker-compose命令已更新为docker compose (空格)
