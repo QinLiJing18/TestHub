@@ -38,8 +38,14 @@ cd TestHub
 # 启动MySQL、Redis、Nacos、EMQX
 docker-compose up -d
 
-# 等待30秒，让服务完全启动
+# 等待30秒，让服务完全启动（Linux / macOS）
 sleep 30
+
+# Windows PowerShell 等价命令
+Start-Sleep -s 30
+
+# Windows CMD 等价命令
+timeout /t 30 /nobreak
 
 # 检查容器状态（所有服务应该是healthy）
 docker-compose ps
