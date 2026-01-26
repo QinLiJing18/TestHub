@@ -26,8 +26,8 @@ CREATE TABLE tb_testcase (
 );
 
 CREATE UNIQUE INDEX uk_case_no ON tb_testcase(case_no);
-CREATE INDEX idx_project_id ON tb_testcase(project_id);
-CREATE INDEX idx_device_id ON tb_testcase(device_id);
+CREATE INDEX idx_testcase_project_id ON tb_testcase(project_id);
+CREATE INDEX idx_testcase_device_id ON tb_testcase(device_id);
 
 -- 测试执行表
 DROP TABLE IF EXISTS tb_test_execution;
@@ -51,8 +51,8 @@ CREATE TABLE tb_test_execution (
 );
 
 CREATE UNIQUE INDEX uk_execution_no ON tb_test_execution(execution_no);
-CREATE INDEX idx_case_id ON tb_test_execution(case_id);
-CREATE INDEX idx_executor_id ON tb_test_execution(executor_id);
+CREATE INDEX idx_execution_case_id ON tb_test_execution(case_id);
+CREATE INDEX idx_execution_executor_id ON tb_test_execution(executor_id);
 
 -- 测试报告表
 DROP TABLE IF EXISTS tb_test_report;
@@ -78,4 +78,4 @@ CREATE TABLE tb_test_report (
 );
 
 CREATE UNIQUE INDEX uk_report_no ON tb_test_report(report_no);
-CREATE INDEX idx_project_id ON tb_test_report(project_id);
+CREATE INDEX idx_report_project_id ON tb_test_report(project_id);

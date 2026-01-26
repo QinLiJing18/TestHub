@@ -9,6 +9,7 @@ import com.testhub.common.dto.Result;
 import com.testhub.common.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,6 +24,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 用户登录
@@ -79,5 +83,20 @@ public class AuthController {
     @PostMapping("/logout")
     public Result<String> logout() {
         return Result.success("退出成功");
+    }
+
+    /**
+     * 测试密码验证
+     */
+    @GetMapping("/test-password")
+    public Result<String> testPassword() {
+        String password = "admin123";
+        String hash = "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Romltoaj9aVO90xGmKYyJWGy";
+        boolean matches = passwordEncoder.matches(password, hash);
+
+        String newHash = passwordEncoder.encode(password);
+        boolean newMatches = passwordEncoder.matches(password, newHash);
+
+        return Result.success("Hash test: " + matches + ", New hash: " + newHash + ", New matches: " + newMatches);
     }
 }
