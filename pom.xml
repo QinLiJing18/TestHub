@@ -40,7 +40,7 @@
         <!-- 数据库相关 -->
         <mybatis-plus.version>3.5.4</mybatis-plus.version>
         <druid.version>1.2.20</druid.version>
-        <mysql.version>5.1.49</mysql.version>
+        <mysql.version>8.0.33</mysql.version>
 
         <!-- 工具类 -->
         <lombok.version>1.18.30</lombok.version>
@@ -109,6 +109,14 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- H2内存数据库（开发测试用） -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>2.2.224</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- Lombok（减少Getter/Setter样板代码） -->

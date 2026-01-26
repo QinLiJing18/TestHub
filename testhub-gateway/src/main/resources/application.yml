@@ -1,5 +1,5 @@
 server:
-  port: 8080  # 网关端口
+  port: 8001  # 网关端口
 
 spring:
   application:
@@ -23,7 +23,7 @@ spring:
       routes:
         # 认证服务路由
         - id: testhub-auth
-          uri: http://localhost:8081  # 直接指定服务地址（无 Nacos 时）
+          uri: http://localhost:9001  # 直接指定服务地址（无 Nacos 时）
           predicates:
             - Path=/api/auth/**  # 匹配路径：/api/auth/**
           filters:
@@ -74,6 +74,8 @@ spring:
       database: 0
       password:  # 如果Redis没有密码，留空
       timeout: 3000ms
+      # ===== 开发环境禁用 Redis =====
+      enabled: false
 
 # 日志配置
 logging:
