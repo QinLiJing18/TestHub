@@ -56,3 +56,13 @@ dist/
 .settings/
 .springBeans
 *.sublime-workspace
+
+# Personal notes and temporary docs
+*_LEARNING.md
+*_SUMMARY.md
+TODAY_*.md
+NOTES_*.md
+
+# Claude临时文件
+.claude/
+nul

@@ -25,6 +25,12 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      encoding: utf-8
   data:
     redis:
       host: localhost

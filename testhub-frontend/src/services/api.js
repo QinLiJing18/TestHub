@@ -73,10 +73,10 @@ export const authService = {
 
   /**
    * 用户登出
-   * POST /api/auth/logout
+   * POST /auth/logout
    */
   logout: () => {
-    return api.post('/api/auth/logout')
+    return api.post('/auth/logout')
   }
 }
 
